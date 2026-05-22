@@ -1,0 +1,48 @@
+{
+    "manifest_version": 3,
+    "name": "Mis Iconos Clásicos",
+    "version": "1.5",
+    "description": "Iconos para pestañas y cabeceras.",
+    "content_scripts": [
+        {
+            "matches": [
+                "*://mail.google.com/*",
+                "*://drive.google.com/*",
+                "*://meet.google.com/*",
+                "*://docs.google.com/*"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "mail_fav.png",
+                "mail_logo.png",
+                "mail_loading.png",
+                "drive_fav.png",
+                "drive_logo.png",
+                "meet_fav.png",
+                "meet_logo.png",
+                "sheets_fav.png",
+                "sheets_logo.png",
+                "slides_fav.png",
+                "slides_logo.png",
+                "docs_fav.png",
+                "docs_logo.png"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    }
+}
