@@ -80,13 +80,21 @@ function interceptarNodos(nodo) {
 
             if (src.includes("calendar")) return;
 
+            // --- NUEVO: ESCUDO ANTI-AVATARES ---
+            // Solo cambiamos la imagen si está dentro de la barra de navegación superior (#gb) 
+            // o en la pantalla inicial de carga (#loading).
+            const estaEnPantallaDeCarga = nodo.closest('#loading');
+            const estaEnCabecera = nodo.closest('#gb') || nodo.classList.contains('gb_5c');
+
+            // Si es una foto de perfil en el cuerpo del correo, salimos y no la tocamos
+            if (!estaEnPantallaDeCarga && !estaEnCabecera) return;
+
+            // Destruimos el srcset y medidas de Google
             if (nodo.hasAttribute("srcset")) nodo.removeAttribute("srcset");
             if (nodo.hasAttribute("width")) nodo.removeAttribute("width");
             if (nodo.hasAttribute("height")) nodo.removeAttribute("height");
 
             nodo.style.objectFit = "contain";
-
-            const estaEnPantallaDeCarga = nodo.closest('#loading');
 
             if (estaEnPantallaDeCarga) {
                 nodo.style.width = "auto";
@@ -96,10 +104,9 @@ function interceptarNodos(nodo) {
                 if (src.includes("gmail") || src.includes("mail")) nodo.src = logosLocales.mailLoading;
             } else {
 
-                // --- AQUÍ APLICAMOS LOS 30PX ---
                 if (src.includes("slides") || src.includes("presentation") || src.includes("sheets") || src.includes("spreadsheets") || src.includes("docs") || src.includes("document")) {
-                    nodo.style.width = "30px";  // Tamaño clavado a 30px
-                    nodo.style.height = "30px"; // Altura clavada a 30px
+                    nodo.style.width = "30px";
+                    nodo.style.height = "30px";
                 } else {
                     nodo.style.width = "auto";
                     nodo.style.height = "auto";
@@ -116,6 +123,7 @@ function interceptarNodos(nodo) {
         }
     }
 
+    // Revisar nodos hijos
     if (nodo.childNodes && nodo.childNodes.length > 0) {
         nodo.childNodes.forEach(hijo => interceptarNodos(hijo));
     }
