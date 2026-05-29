@@ -7,6 +7,7 @@
         {
             "matches": [
                 "*://mail.google.com/*",
+                "*://calendar.google.com/*",
                 "*://drive.google.com/*",
                 "*://meet.google.com/*",
                 "*://docs.google.com/*"
@@ -32,7 +33,9 @@
                 "slides_fav.png",
                 "slides_logo.png",
                 "docs_fav.png",
-                "docs_logo.png"
+                "docs_logo.png",
+                "calendar_*_2x.png",
+                "calendar_*_2x_ico.png"
             ],
             "matches": [
                 "<all_urls>"

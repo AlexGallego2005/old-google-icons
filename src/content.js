@@ -1,6 +1,12 @@
-// 1. RUTAS DE LAS IMÁGENES (Adiós Calendar)
+// --- LÓGICA DINÁMICA DE CALENDAR ---
+const diaActual = new Date().getDate();
+const faviconCalendarLocal = chrome.runtime.getURL(`calendar_${diaActual}_2x_ico.png`);
+const logoCalendarLocal = chrome.runtime.getURL(`calendar_${diaActual}_2x.png`);
+
+// 1. RUTAS DE LAS IMÁGENES
 const faviconsLocales = {
     "mail.google.com": chrome.runtime.getURL("mail_fav.png"),
+    "calendar.google.com": faviconCalendarLocal, // Usa tus iconos editados a mano sin padding
     "drive.google.com": chrome.runtime.getURL("drive_fav.png"),
     "meet.google.com": chrome.runtime.getURL("meet_fav.png")
 };
@@ -8,6 +14,7 @@ const faviconsLocales = {
 const logosLocales = {
     mail: chrome.runtime.getURL("mail_logo.png"),
     mailLoading: chrome.runtime.getURL("mail_loading.png"),
+    calendar: logoCalendarLocal, // Usa los originales para la cabecera
     drive: chrome.runtime.getURL("drive_logo.png"),
     meet: chrome.runtime.getURL("meet_logo.png"),
     sheets: chrome.runtime.getURL("sheets_logo.png"),
@@ -26,7 +33,7 @@ if (window.location.hostname === "docs.google.com") {
     else urlFaviconActual = chrome.runtime.getURL("docs_fav.png");
 }
 
-// 3. DESTRUIR EL SPRITE SHEET EN DOCS/SHEETS/SLIDES E INYECTAR EL LOGO
+// 3. DESTRUIR EL SPRITE SHEET EN DOCS/SHEETS/SLIDES
 function inyectarCSSSprites() {
     let logoCSS = null;
     if (urlActual.includes("/document/")) logoCSS = logosLocales.docs;
@@ -42,8 +49,13 @@ function inyectarCSSSprites() {
             .docs-branding-icon {
                 background-image: url('${logoCSS}') !important;
                 background-size: contain !important;
-                background-position: center !important;
+                background-position: center left !important;
                 background-repeat: no-repeat !important;
+                width: 100px !important;
+                height: 36px !important;
+                margin-left: 0px !important; 
+                margin-right: 12px !important;
+                display: inline-block !important;
             }
         `;
         function intentarInyectar() {
@@ -78,18 +90,12 @@ function interceptarNodos(nodo) {
 
         if (src.includes("gstatic.com") && (src.includes("productlogos") || src.includes("ui/v1/icons/mail") || src.includes("logo_"))) {
 
-            if (src.includes("calendar")) return;
-
-            // --- NUEVO: ESCUDO ANTI-AVATARES ---
-            // Solo cambiamos la imagen si está dentro de la barra de navegación superior (#gb) 
-            // o en la pantalla inicial de carga (#loading).
             const estaEnPantallaDeCarga = nodo.closest('#loading');
             const estaEnCabecera = nodo.closest('#gb') || nodo.classList.contains('gb_5c');
 
-            // Si es una foto de perfil en el cuerpo del correo, salimos y no la tocamos
+            // Escudo anti-avatares
             if (!estaEnPantallaDeCarga && !estaEnCabecera) return;
 
-            // Destruimos el srcset y medidas de Google
             if (nodo.hasAttribute("srcset")) nodo.removeAttribute("srcset");
             if (nodo.hasAttribute("width")) nodo.removeAttribute("width");
             if (nodo.hasAttribute("height")) nodo.removeAttribute("height");
@@ -104,16 +110,22 @@ function interceptarNodos(nodo) {
                 if (src.includes("gmail") || src.includes("mail")) nodo.src = logosLocales.mailLoading;
             } else {
 
+                // --- SIZING ESPECÍFICO ---
                 if (src.includes("slides") || src.includes("presentation") || src.includes("sheets") || src.includes("spreadsheets") || src.includes("docs") || src.includes("document")) {
                     nodo.style.width = "30px";
                     nodo.style.height = "30px";
+                } else if (src.includes("calendar")) {
+                    nodo.style.width = "40px"; // Volvemos a los 40px estándar para la cabecera
+                    nodo.style.height = "40px";
                 } else {
                     nodo.style.width = "auto";
                     nodo.style.height = "auto";
                     nodo.style.maxWidth = "120px";
                 }
 
+                // --- REEMPLAZO DE LA IMAGEN ---
                 if (src.includes("gmail") || src.includes("mail")) nodo.src = logosLocales.mail;
+                else if (src.includes("calendar")) nodo.src = logosLocales.calendar;
                 else if (src.includes("drive")) nodo.src = logosLocales.drive;
                 else if (src.includes("meet")) nodo.src = logosLocales.meet;
                 else if (src.includes("slides") || src.includes("presentation")) nodo.src = logosLocales.slides;
@@ -123,7 +135,6 @@ function interceptarNodos(nodo) {
         }
     }
 
-    // Revisar nodos hijos
     if (nodo.childNodes && nodo.childNodes.length > 0) {
         nodo.childNodes.forEach(hijo => interceptarNodos(hijo));
     }

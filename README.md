@@ -12,6 +12,7 @@ Extensión para Google Chrome que reemplaza los iconos actuales del ecosistema d
 | Docs (Documentos) | <img width="48" height="54" alt="image" src="https://github.com/user-attachments/assets/1f21753a-18ef-47f0-a158-0f6df12ca0bf" /> <img width="35" height="57" alt="image" src="https://github.com/user-attachments/assets/9d5aa911-eec1-4ee1-b0c1-4049b4588e6d" /> | <img width="51" height="52" alt="image" src="https://github.com/user-attachments/assets/c82d3dec-4f20-4ceb-b69b-1845d3476101" /> <img width="48" height="39" alt="image" src="https://github.com/user-attachments/assets/dc52e9bc-f005-4bd8-b83b-b700e442dd2b" />
 | Sheets (Hojas de cálculo) | <img width="49" height="53" alt="image" src="https://github.com/user-attachments/assets/6903fe61-f71f-4b84-8ce3-121ab50bab73" /> <img width="47" height="35" alt="image" src="https://github.com/user-attachments/assets/5892a78b-c57b-420c-beb5-64d2c693f988" /> | <img width="46" height="54" alt="image" src="https://github.com/user-attachments/assets/69305eb4-52bc-4274-8d03-58a6ca716a9e" /> <img width="46" height="46" alt="image" src="https://github.com/user-attachments/assets/596ecf39-bbea-41c9-b3c0-c517d780c45a" /> |
 | Slides (Presentaciones) | | |
+| Calendario | | |
 
 ## Funcionamiento
 
